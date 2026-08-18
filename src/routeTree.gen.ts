@@ -9,38 +9,114 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SolucoesIndexRouteImport } from './routes/solucoes.index'
+import { Route as SegmentosIndexRouteImport } from './routes/segmentos.index'
+import { Route as SolucoesSlugRouteImport } from './routes/solucoes.$slug'
+import { Route as SegmentosSlugRouteImport } from './routes/segmentos.$slug'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SolucoesIndexRoute = SolucoesIndexRouteImport.update({
+  id: '/solucoes/',
+  path: '/solucoes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SegmentosIndexRoute = SegmentosIndexRouteImport.update({
+  id: '/segmentos/',
+  path: '/segmentos/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SolucoesSlugRoute = SolucoesSlugRouteImport.update({
+  id: '/solucoes/$slug',
+  path: '/solucoes/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SegmentosSlugRoute = SegmentosSlugRouteImport.update({
+  id: '/segmentos/$slug',
+  path: '/segmentos/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/segmentos/$slug': typeof SegmentosSlugRoute
+  '/solucoes/$slug': typeof SolucoesSlugRoute
+  '/segmentos/': typeof SegmentosIndexRoute
+  '/solucoes/': typeof SolucoesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/segmentos/$slug': typeof SegmentosSlugRoute
+  '/solucoes/$slug': typeof SolucoesSlugRoute
+  '/segmentos': typeof SegmentosIndexRoute
+  '/solucoes': typeof SolucoesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/segmentos/$slug': typeof SegmentosSlugRoute
+  '/solucoes/$slug': typeof SolucoesSlugRoute
+  '/segmentos/': typeof SegmentosIndexRoute
+  '/solucoes/': typeof SolucoesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/sitemap.xml'
+    | '/segmentos/$slug'
+    | '/solucoes/$slug'
+    | '/segmentos/'
+    | '/solucoes/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/sitemap.xml'
+    | '/segmentos/$slug'
+    | '/solucoes/$slug'
+    | '/segmentos'
+    | '/solucoes'
+  id:
+    | '__root__'
+    | '/'
+    | '/sitemap.xml'
+    | '/segmentos/$slug'
+    | '/solucoes/$slug'
+    | '/segmentos/'
+    | '/solucoes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  SegmentosSlugRoute: typeof SegmentosSlugRoute
+  SolucoesSlugRoute: typeof SolucoesSlugRoute
+  SegmentosIndexRoute: typeof SegmentosIndexRoute
+  SolucoesIndexRoute: typeof SolucoesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,22 +124,45 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/solucoes/': {
+      id: '/solucoes/'
+      path: '/solucoes'
+      fullPath: '/solucoes/'
+      preLoaderRoute: typeof SolucoesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/segmentos/': {
+      id: '/segmentos/'
+      path: '/segmentos'
+      fullPath: '/segmentos/'
+      preLoaderRoute: typeof SegmentosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/solucoes/$slug': {
+      id: '/solucoes/$slug'
+      path: '/solucoes/$slug'
+      fullPath: '/solucoes/$slug'
+      preLoaderRoute: typeof SolucoesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/segmentos/$slug': {
+      id: '/segmentos/$slug'
+      path: '/segmentos/$slug'
+      fullPath: '/segmentos/$slug'
+      preLoaderRoute: typeof SegmentosSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  SegmentosSlugRoute: SegmentosSlugRoute,
+  SolucoesSlugRoute: SolucoesSlugRoute,
+  SegmentosIndexRoute: SegmentosIndexRoute,
+  SolucoesIndexRoute: SolucoesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
