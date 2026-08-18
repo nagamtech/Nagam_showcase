@@ -24,7 +24,7 @@ const STATUSES = ["Pedido recebido", "Em preparo", "Pronto", "Saiu para entrega"
 export default function OrderingDemo({ config }: { config: OrderingConfig }) {
   const [tab, setTab] = useState<"loja" | "pedidos">("loja");
   const [step, setStep] = useState<Step>("home");
-  const [categoryId, setCategoryId] = useState(config.categories[0].id);
+  const [categoryId, setCategoryId] = useState(config.categories[0]!.id);
   const [product, setProduct] = useState<Item | null>(null);
   const [qty, setQty] = useState(1);
   const [cart, setCart] = useState<{ item: Item; qty: number }[]>([]);
