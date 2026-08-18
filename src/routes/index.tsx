@@ -50,7 +50,10 @@ function Index() {
             Portfólio de Soluções para Pequenos Negócios
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
-            Explore aplicativos desenvolvidos para resolver problemas reais do comércio.
+            Explore aplicativos que a Nagam desenvolve para resolver problemas reais do comércio.
+          </p>
+          <p className="mt-3 text-[11px] font-medium tracking-[0.18em] text-accent uppercase">
+            Nagam · Tecnologia Para Negócios Locais
           </p>
 
           <div className="mx-auto mt-7 max-w-md">
