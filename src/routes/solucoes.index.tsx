@@ -6,13 +6,13 @@ import { getSegment, solutions } from "@/data/catalog";
 export const Route = createFileRoute("/solucoes/")({
   head: () => ({
     meta: [
-      { title: "Todas as soluções — Showcase Apps" },
+      { title: "Todas as soluções — Nagam Showcase" },
       {
         name: "description",
         content:
           "Lista completa de aplicativos demonstráveis: agendamento, cardápio digital, catálogo e reservas para o comércio local.",
       },
-      { property: "og:title", content: "Todas as soluções — Showcase Apps" },
+      { property: "og:title", content: "Todas as soluções — Nagam Showcase" },
       {
         property: "og:description",
         content: "Aplicativos navegáveis com fluxos completos e dados simulados.",

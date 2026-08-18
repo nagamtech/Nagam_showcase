@@ -5,13 +5,13 @@ import { countBySegment, segments } from "@/data/catalog";
 export const Route = createFileRoute("/segmentos/")({
   head: () => ({
     meta: [
-      { title: "Segmentos atendidos — Showcase Apps" },
+      { title: "Segmentos atendidos — Nagam Showcase" },
       {
         name: "description",
         content:
           "Barbearias, lanchonetes, pizzarias, óticas, pet shops e mais: veja as soluções digitais disponíveis para cada segmento.",
       },
-      { property: "og:title", content: "Segmentos atendidos — Showcase Apps" },
+      { property: "og:title", content: "Segmentos atendidos — Nagam Showcase" },
       {
         property: "og:description",
         content: "Explore aplicativos por segmento do comércio local.",

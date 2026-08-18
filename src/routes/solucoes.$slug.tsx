@@ -14,13 +14,13 @@ export const Route = createFileRoute("/solucoes/$slug")({
     if (!loaderData) {
       return {
         meta: [
-          { title: "Solução não encontrada — Showcase Apps" },
+          { title: "Solução não encontrada — Nagam Showcase" },
           { name: "robots", content: "noindex" },
         ],
       };
     }
     const { solution, segment } = loaderData;
-    const title = `${solution.name} — ${segment.name} | Showcase Apps`;
+    const title = `${solution.name} — ${segment.name} | Nagam Showcase`;
     return {
       meta: [
         { title },

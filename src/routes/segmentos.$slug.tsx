@@ -12,11 +12,11 @@ export const Route = createFileRoute("/segmentos/$slug")({
   head: ({ loaderData }) => {
     if (!loaderData) {
       return {
-        meta: [{ title: "Segmento não encontrado — Showcase Apps" }, { name: "robots", content: "noindex" }],
+        meta: [{ title: "Segmento não encontrado — Nagam Showcase" }, { name: "robots", content: "noindex" }],
       };
     }
     const { segment } = loaderData;
-    const title = `${segment.name} — Soluções digitais | Showcase Apps`;
+    const title = `${segment.name} — Soluções digitais | Nagam Showcase`;
     return {
       meta: [
         { title },

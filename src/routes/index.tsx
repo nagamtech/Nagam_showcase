@@ -6,13 +6,13 @@ import { countBySegment, segments, solutions, solutionsBySegment } from "@/data/
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Showcase Apps — Portfólio de Soluções para Pequenos Negócios" },
+      { title: "Nagam Showcase — Portfólio de Soluções para Pequenos Negócios" },
       {
         name: "description",
         content:
           "Explore aplicativos desenvolvidos para resolver problemas reais do comércio e teste demonstrações interativas por segmento.",
       },
-      { property: "og:title", content: "Showcase Apps — Portfólio de Soluções" },
+      { property: "og:title", content: "Nagam Showcase — Portfólio de Soluções" },
       {
         property: "og:description",
         content: "Biblioteca interativa de aplicativos para barbearias, lanchonetes, lojas e mais.",
