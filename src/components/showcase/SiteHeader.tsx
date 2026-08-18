@@ -1,0 +1,36 @@
+import { Link } from "@tanstack/react-router";
+
+import logoNavy from "@/assets/nagam-horizontal-navy.png.asset.json";
+import logoWhite from "@/assets/nagam-horizontal-white.png.asset.json";
+
+const nav = [
+  { to: "/", label: "Início" },
+  { to: "/segmentos", label: "Segmentos" },
+  { to: "/solucoes", label: "Soluções" },
+] as const;
+
+export function SiteHeader() {
+  return (
+    <header className="sticky top-0 z-40 border-b border-border/70 bg-background/80 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
+        <Link to="/" className="flex min-w-0 items-center gap-2" aria-label="Nagam">
+          <img src={logoNavy.url} alt="Nagam" className="h-8 w-auto shrink-0 dark:hidden" />
+          <img src={logoWhite.url} alt="Nagam" className="hidden h-8 w-auto shrink-0 dark:block" />
+        </Link>
+        <nav className="no-scrollbar ml-auto flex items-center gap-1 overflow-x-auto">
+          {nav.map((n) => (
+            <Link
+              key={n.to}
+              to={n.to}
+              activeOptions={{ exact: n.to === "/" }}
+              className="rounded-full px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:bg-muted"
+              activeProps={{ className: "bg-accent-soft text-accent" }}
+            >
+              {n.label}
+            </Link>
+          ))}
+        </nav>
+      </div>
+    </header>
+  );
+}
