@@ -14,8 +14,8 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-border/70 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
         <Link to="/" className="flex min-w-0 items-center gap-2" aria-label="Nagam">
-          <img src={logoNavy.url} alt="Nagam" className="h-8 w-auto shrink-0 dark:hidden" />
-          <img src={logoWhite.url} alt="Nagam" className="hidden h-8 w-auto shrink-0 dark:block" />
+          <img src={logoNavy.url} alt="Nagam" className="h-10 w-auto shrink-0 dark:hidden" />
+          <img src={logoWhite.url} alt="Nagam" className="hidden h-10 w-auto shrink-0 dark:block" />
         </Link>
         <nav className="no-scrollbar ml-auto flex items-center gap-1 overflow-x-auto">
           {nav.map((n) => (
