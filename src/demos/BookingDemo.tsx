@@ -80,6 +80,14 @@ export default function BookingDemo({ config }: { config: BookingConfig }) {
     return new Set(SLOTS.filter((_, i) => (i * 3 + seed) % 5 === 0));
   };
 
+  const nextFreeSlot = useMemo(() => {
+    const first = days[0];
+    if (!first) return SLOTS[0]!;
+    const seed = first.getDate() + first.getMonth();
+    const taken = new Set(SLOTS.filter((_, i) => (i * 3 + seed) % 5 === 0));
+    return SLOTS.find((s) => !taken.has(s)) ?? SLOTS[0]!;
+  }, [days]);
+
   const run = (label: string, ms: number, done: () => void) => {
     setLoading(label);
     window.setTimeout(() => {
@@ -230,14 +238,14 @@ export default function BookingDemo({ config }: { config: BookingConfig }) {
                 <p className="mb-2 text-xs font-semibold text-muted-foreground">Próximo horário livre</p>
                 <SelectTile
                   emoji="⚡"
-                  title={`Hoje às ${SLOTS[3]}`}
+                  title={`Hoje às ${nextFreeSlot}`}
                   subtitle={`${config.pros[0].name} • ${config.services[0].name}`}
                   meta={brl(config.services[0].price)}
                   onClick={() => {
                     setPro(config.pros[0]);
                     setService(config.services[0]);
                     setDate(days[0]);
-                    setTime(SLOTS[3]);
+                    setTime(nextFreeSlot);
                     setStep("name");
                   }}
                 />
@@ -346,7 +354,10 @@ export default function BookingDemo({ config }: { config: BookingConfig }) {
                   return (
                     <button
                       key={d.toISOString()}
-                      onClick={() => setDate(d)}
+                      onClick={() => {
+                        setDate(d);
+                        setTime(null);
+                      }}
                       className={
                         active
                           ? "rounded-2xl border border-accent bg-accent px-2 py-3 text-accent-foreground transition active:scale-95"

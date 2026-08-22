@@ -261,7 +261,15 @@ export default function CatalogDemo({ config }: { config: CatalogConfig }) {
           { id: "reservas", label: "Reservas", icon: <Heart className="h-4 w-4" /> },
         ]}
         active={tab}
-        onChange={(id) => setTab(id as "vitrine" | "reservas")}
+        onChange={(id) => {
+          const next = id as "vitrine" | "reservas";
+          setTab(next);
+          if (next === "vitrine" && step === "done") {
+            setItem(null);
+            setVariant(null);
+            setStep("categories");
+          }
+        }}
       />
     </div>
   );

@@ -16,7 +16,7 @@ import {
   TabBar,
 } from "./ui";
 
-type Step = "home" | "category" | "product" | "cart" | "checkout" | "payment" | "sent" | "tracking";
+type Step = "home" | "category" | "product" | "cart" | "checkout" | "payment" | "sent";
 type Item = OrderingConfig["categories"][number]["items"][number];
 
 const STATUSES = ["Pedido recebido", "Em preparo", "Pronto", "Saiu para entrega", "Concluído"];
@@ -165,6 +165,10 @@ export default function OrderingDemo({ config }: { config: OrderingConfig }) {
                   <button
                     key={i.id}
                     onClick={() => {
+                      const owner = config.categories.find((c) =>
+                        c.items.some((it) => it.id === i.id),
+                      );
+                      if (owner) setCategoryId(owner.id);
                       setProduct(i);
                       setQty(1);
                       setStep("product");
@@ -441,9 +445,13 @@ export default function OrderingDemo({ config }: { config: OrderingConfig }) {
           { id: "pedidos", label: "Pedidos", icon: <Receipt className="h-4 w-4" /> },
         ]}
         active={tab}
-        onChange={(id) => setTab(id as "loja" | "pedidos")}
+        onChange={(id) => {
+          const next = id as "loja" | "pedidos";
+          setTab(next);
+          if (next === "loja" && step === "sent") reset();
+        }}
       />
-      {tab === "loja" && cartCount > 0 && step !== "cart" && step !== "sent" ? (
+      {tab === "loja" && cartCount > 0 && ["home", "category", "product"].includes(step) ? (
         <button
           onClick={() => setStep("cart")}
           className="absolute right-4 bottom-20 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2.5 text-xs font-semibold text-accent-foreground shadow-lg transition active:scale-95"
