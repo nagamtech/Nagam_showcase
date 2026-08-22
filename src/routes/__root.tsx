@@ -91,7 +91,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      
+      {
+        property: "og:image",
+        content: "https://nagamshowcase.lovable.app/og-nagam-showcase.jpg",
+      },
+      {
+        name: "twitter:image",
+        content: "https://nagamshowcase.lovable.app/og-nagam-showcase.jpg",
+      },
+
     ],
     links: [
       {
