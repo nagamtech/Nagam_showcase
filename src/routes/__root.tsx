@@ -99,7 +99,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         name: "twitter:image",
         content: "https://nagamshowcase.lovable.app/og-nagam-showcase.jpg",
       },
-
+      { name: "theme-color", content: "#0A4CFF" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+      { name: "apple-mobile-web-app-title", content: "Nagam" },
+      { name: "application-name", content: "Nagam" },
     ],
     links: [
       {
@@ -113,7 +118,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap",
       },
       { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
     ],
+
   }),
   shellComponent: RootShell,
   component: RootComponent,
