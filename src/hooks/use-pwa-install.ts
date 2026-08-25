@@ -12,6 +12,7 @@ export function usePwaInstall() {
   const [isInstallable, setIsInstallable] = useState(false);
   const [status, setStatus] = useState<InstallStatus>("idle");
   const [isInstalled, setIsInstalled] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -24,6 +25,12 @@ export function usePwaInstall() {
       setIsInstalled(standalone);
       return standalone;
     };
+
+    const ua = window.navigator.userAgent;
+    const iosLike =
+      /iPad|iPhone|iPod/.test(ua) ||
+      (/Macintosh/.test(ua) && typeof document !== "undefined" && "ontouchend" in document);
+    setIsIOS(iosLike);
 
     if (checkInstalled()) {
       setIsInstallable(false);
@@ -81,6 +88,7 @@ export function usePwaInstall() {
 
   return {
     isInstallable,
+    isIOS,
     isInstalled,
     status,
     promptInstall,
