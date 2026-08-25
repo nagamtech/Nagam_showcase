@@ -52,22 +52,12 @@ export function usePwaInstall() {
       }
     };
 
-    if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener("change", onDisplayModeChange);
-    } else {
-      // @ts-expect-error older API fallback
-      mediaQuery.addListener(onDisplayModeChange);
-    }
+    mediaQuery.addEventListener("change", onDisplayModeChange);
 
     return () => {
       window.removeEventListener("beforeinstallprompt", onBeforeInstallPrompt);
       window.removeEventListener("appinstalled", onAppInstalled);
-      if (mediaQuery.removeEventListener) {
-        mediaQuery.removeEventListener("change", onDisplayModeChange);
-      } else {
-        // @ts-expect-error older API fallback
-        mediaQuery.removeListener(onDisplayModeChange);
-      }
+      mediaQuery.removeEventListener("change", onDisplayModeChange);
     };
   }, []);
 
