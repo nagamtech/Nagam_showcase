@@ -26,6 +26,12 @@ export function usePwaInstall() {
       return standalone;
     };
 
+    const ua = window.navigator.userAgent;
+    const iosLike =
+      /iPad|iPhone|iPod/.test(ua) ||
+      (/Macintosh/.test(ua) && typeof document !== "undefined" && "ontouchend" in document);
+    setIsIOS(iosLike);
+
     if (checkInstalled()) {
       setIsInstallable(false);
       return;
