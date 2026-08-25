@@ -88,6 +88,7 @@ export function usePwaInstall() {
 
   return {
     isInstallable,
+    isIOS,
     isInstalled,
     status,
     promptInstall,
