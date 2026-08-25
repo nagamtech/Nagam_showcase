@@ -42,19 +42,6 @@ export function SiteHeader() {
           <img src={logoNavy.url} alt="Nagam" className="h-10 w-auto shrink-0 dark:hidden" />
           <img src={logoWhite.url} alt="Nagam" className="hidden h-10 w-auto shrink-0 dark:block" />
         </Link>
-        <nav className="no-scrollbar ml-auto flex min-w-0 items-center gap-1 overflow-x-auto">
-          {nav.map((n) => (
-            <Link
-              key={n.to}
-              to={n.to}
-              activeOptions={{ exact: n.to === "/" }}
-              className="shrink-0 rounded-full px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:bg-muted"
-              activeProps={{ className: "bg-accent-soft text-accent" }}
-            >
-              {n.label}
-            </Link>
-          ))}
-        </nav>
         {showInstall && (
           <button
             type="button"
@@ -70,6 +57,19 @@ export function SiteHeader() {
             <span className="hidden sm:inline">Instalar App</span>
           </button>
         )}
+        <nav className="no-scrollbar ml-auto flex min-w-0 items-center gap-1 overflow-x-auto">
+          {nav.map((n) => (
+            <Link
+              key={n.to}
+              to={n.to}
+              activeOptions={{ exact: n.to === "/" }}
+              className="shrink-0 rounded-full px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:bg-muted"
+              activeProps={{ className: "bg-accent-soft text-accent" }}
+            >
+              {n.label}
+            </Link>
+          ))}
+        </nav>
       </div>
     </header>
   );
