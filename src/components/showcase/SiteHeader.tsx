@@ -13,9 +13,16 @@ const nav = [
 ] as const;
 
 export function SiteHeader() {
-  const { isInstallable, promptInstall } = usePwaInstall();
+  const { isInstallable, isInstalled, isIOS, promptInstall } = usePwaInstall();
+  const showInstall = !isInstalled && (isInstallable || isIOS);
 
   const handleInstallClick = async () => {
+    if (!isInstallable && isIOS) {
+      toast.info("Instalar no iPhone", {
+        description: 'Toque em Compartilhar e escolha "Adicionar à Tela de Início".',
+      });
+      return;
+    }
     const result = await promptInstall();
     if (result.outcome === "accepted") {
       toast.success("Instalação iniciada", {
