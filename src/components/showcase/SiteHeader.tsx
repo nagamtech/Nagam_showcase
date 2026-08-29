@@ -48,24 +48,21 @@ export function SiteHeader() {
         {/* Espaço flexível */}
         <div className="flex-1" />
 
-        {/* Botão Instalar App — visível em todas as telas */}
+        {/* ✅ BOTÃO COM "DOWNLOAD" SEMPRE VISÍVEL */}
         {showInstall && (
           <button
             type="button"
             onClick={handleInstallClick}
             className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-            aria-label="Instalar app"
-            title="Instalar app"
+            aria-label="Download do App"
+            title="Download do App"
           >
-            <span className="relative flex items-center justify-center">
-              <Smartphone className="h-4 w-4" aria-hidden="true" />
-              <Download className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 stroke-[3]" aria-hidden="true" />
-            </span>
-            <span className="hidden sm:inline">Instalar App</span>
+            <Smartphone className="h-4 w-4" aria-hidden="true" />
+            <span>Download</span> {/* ✅ SEMPRE VISÍVEL */}
           </button>
         )}
 
-        {/* Menu completo — só visível em telas grandes */}
+        {/* Menu desktop — visível em telas grandes */}
         <nav className="hidden md:flex min-w-0 items-center gap-1">
           {nav.map((n) => (
             <Link
@@ -80,7 +77,7 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        {/* Ícone Hambúrguer — só visível em telas pequenas */}
+        {/* Ícone Hambúrguer — visível apenas no mobile */}
         <button
           type="button"
           className="md:hidden ml-1 p-1.5 rounded-full hover:bg-muted transition"
@@ -90,17 +87,18 @@ export function SiteHeader() {
           {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
 
-        {/* Menu suspenso mobile — aparece ao clicar no hambúrguer */}
+        {/* ✅ MENU MOBILE — FUNDO AZUL + MAIS ESPAÇAMENTO */}
         {mobileMenuOpen && (
-          <div className="absolute top-full left-4 right-4 mt-2 bg-background/95 backdrop-blur-xl border border-border/70 rounded-xl shadow-lg md:hidden">
-            <nav className="flex flex-col p-3 gap-1">
+          <div className="absolute top-full left-4 right-4 mt-2 rounded-xl shadow-lg overflow-hidden md:hidden"
+               style={{ backgroundColor: "#0a2463" }}> {/* Cor azul da marca */}
+            <nav className="flex flex-col p-4 gap-3"> {/* Mais espaçamento entre itens */}
               {nav.map((n) => (
                 <Link
                   key={n.to}
                   to={n.to}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="rounded-full px-4 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-muted"
-                  activeProps={{ className: "bg-accent-soft text-accent" }}
+                  className="rounded-lg px-4 py-3 text-base font-medium text-white transition hover:bg-white/10"
+                  activeProps={{ className: "bg-white/20 text-white font-semibold" }}
                 >
                   {n.label}
                 </Link>
