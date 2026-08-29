@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Smartphone, Download } from "lucide-react";
 import { toast } from "sonner";
-
 import logoNavy from "@/assets/nagam-horizontal-navy.png.asset.json";
 import logoWhite from "@/assets/nagam-horizontal-white.png.asset.json";
 import { usePwaInstall } from "@/hooks/use-pwa-install";
@@ -38,10 +37,16 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
+        {/* Logo permanece à esquerda */}
         <Link to="/" className="flex min-w-0 items-center gap-2" aria-label="Nagam">
           <img src={logoNavy.url} alt="Nagam" className="h-10 w-auto shrink-0 dark:hidden" />
           <img src={logoWhite.url} alt="Nagam" className="hidden h-10 w-auto shrink-0 dark:block" />
         </Link>
+
+        {/* Espaço flexível empurra os itens para a direita */}
+        <div className="flex-1" />
+
+        {/* ✅ BOTÃO AGORA À DIREITA, AO LADO DO MENU */}
         {showInstall && (
           <button
             type="button"
@@ -57,7 +62,9 @@ export function SiteHeader() {
             <span className="hidden sm:inline">Instalar App</span>
           </button>
         )}
-        <nav className="no-scrollbar ml-auto flex min-w-0 items-center gap-1 overflow-x-auto">
+
+        {/* Menu continua à direita, ao lado do botão */}
+        <nav className="no-scrollbar flex min-w-0 items-center gap-1 overflow-x-auto">
           {nav.map((n) => (
             <Link
               key={n.to}
