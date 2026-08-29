@@ -1,9 +1,10 @@
 import { Link } from "@tanstack/react-router";
-import { Smartphone, Download } from "lucide-react";
+import { Smartphone, Download, Menu, X } from "lucide-react";
 import { toast } from "sonner";
 import logoNavy from "@/assets/nagam-horizontal-navy.png.asset.json";
 import logoWhite from "@/assets/nagam-horizontal-white.png.asset.json";
 import { usePwaInstall } from "@/hooks/use-pwa-install";
+import { useState } from "react";
 
 const nav = [
   { to: "/", label: "Início" },
@@ -14,6 +15,7 @@ const nav = [
 export function SiteHeader() {
   const { isInstallable, isInstalled, isIOS, promptInstall } = usePwaInstall();
   const showInstall = !isInstalled && (isInstallable || isIOS);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleInstallClick = async () => {
     if (!isInstallable && isIOS) {
@@ -36,17 +38,17 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/70 bg-background/80 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
-        {/* Logo permanece à esquerda */}
+      <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 relative">
+        {/* Logo à esquerda */}
         <Link to="/" className="flex min-w-0 items-center gap-2" aria-label="Nagam">
           <img src={logoNavy.url} alt="Nagam" className="h-10 w-auto shrink-0 dark:hidden" />
           <img src={logoWhite.url} alt="Nagam" className="hidden h-10 w-auto shrink-0 dark:block" />
         </Link>
 
-        {/* Espaço flexível empurra os itens para a direita */}
+        {/* Espaço flexível */}
         <div className="flex-1" />
 
-        {/* ✅ BOTÃO AGORA À DIREITA, AO LADO DO MENU */}
+        {/* Botão Instalar App — visível em todas as telas */}
         {showInstall && (
           <button
             type="button"
@@ -63,8 +65,8 @@ export function SiteHeader() {
           </button>
         )}
 
-        {/* Menu continua à direita, ao lado do botão */}
-        <nav className="no-scrollbar flex min-w-0 items-center gap-1 overflow-x-auto">
+        {/* Menu completo — só visível em telas grandes */}
+        <nav className="hidden md:flex min-w-0 items-center gap-1">
           {nav.map((n) => (
             <Link
               key={n.to}
@@ -77,6 +79,35 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
+
+        {/* Ícone Hambúrguer — só visível em telas pequenas */}
+        <button
+          type="button"
+          className="md:hidden ml-1 p-1.5 rounded-full hover:bg-muted transition"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
+        >
+          {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+
+        {/* Menu suspenso mobile — aparece ao clicar no hambúrguer */}
+        {mobileMenuOpen && (
+          <div className="absolute top-full left-4 right-4 mt-2 bg-background/95 backdrop-blur-xl border border-border/70 rounded-xl shadow-lg md:hidden">
+            <nav className="flex flex-col p-3 gap-1">
+              {nav.map((n) => (
+                <Link
+                  key={n.to}
+                  to={n.to}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="rounded-full px-4 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-muted"
+                  activeProps={{ className: "bg-accent-soft text-accent" }}
+                >
+                  {n.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   );
