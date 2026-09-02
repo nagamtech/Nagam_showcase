@@ -1,0 +1,21 @@
+name: Gitleaks — Detecção de Segredos
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  scan:
+    name: Verificar Segredos
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      pull-requests: write
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # ⚠️ Essencial: escaneia TODO histórico
+
+      - name: Executar Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
