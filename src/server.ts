@@ -1,14 +1,52 @@
 import "./lib/error-capture";
-
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+
+// ➕ INÍCIO — Proteção de Limite de Requisições (NOVO!)
+const contadorPorIP = new Map<string, { contagem: number; expiraEm: number }>();
+
+// Limpa contagens antigas a cada 5 minutos
+setInterval(() => {
+  const agora = Date.now();
+  for (const [ip, dados] of contadorPorIP.entries()) {
+    if (dados.expiraEm < agora) contadorPorIP.delete(ip);
+  }
+}, 300_000);
+
+function aplicarLimite(request: Request): Response | null {
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "desconhecido";
+  const agora = Date.now();
+  const JANELA_TEMPO = 60 * 1000; // 1 minuto
+  const MAXIMO_REQUISICOES = 100; // 100 por minuto
+
+  let registro = contadorPorIP.get(ip);
+  if (!registro || registro.expiraEm < agora) {
+    registro = { contagem: 0, expiraEm: agora + JANELA_TEMPO };
+  }
+
+  registro.contagem += 1;
+  contadorPorIP.set(ip, registro);
+
+  if (registro.contagem > MAXIMO_REQUISICOES) {
+    return new Response(
+      JSON.stringify({
+        erro: "Muitas requisições",
+        mensagem: "Por favor, aguarde 1 minuto antes de tentar novamente.",
+      }),
+      {
+        status: 429,
+        headers: { "Content-Type": "application/json", "Retry-After": "60" },
+      }
+    );
+  }
+  return null;
+}
+// ➕ FIM — Proteção Nova
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
 };
-
 let serverEntryPromise: Promise<ServerEntry> | undefined;
-
 async function getServerEntry(): Promise<ServerEntry> {
   if (!serverEntryPromise) {
     serverEntryPromise = import("@tanstack/react-start/server-entry").then(
@@ -18,16 +56,12 @@ async function getServerEntry(): Promise<ServerEntry> {
   return serverEntryPromise;
 }
 
-// h3 swallows in-handler throws into a normal 500 Response with body
-// {"unhandled":true,"message":"HTTPError"} — try/catch alone never fires for those.
 async function normalizeCatastrophicSsrResponse(response: Response): Promise<Response> {
   if (response.status < 500) return response;
   const contentType = response.headers.get("content-type") ?? "";
   if (!contentType.includes("application/json")) return response;
-
   const body = await response.clone().text();
   if (!isH3SwallowedErrorBody(body)) return response;
-
   console.error(consumeLastCapturedError() ?? new Error(`h3 swallowed SSR error: ${body}`));
   return new Response(renderErrorPage(), {
     status: 500,
@@ -47,6 +81,10 @@ function isH3SwallowedErrorBody(body: string): boolean {
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
+      // ➕ AQUI — Verifica limite ANTES de processar qualquer coisa
+      const bloqueio = aplicarLimite(request);
+      if (bloqueio) return bloqueio;
+
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
       return await normalizeCatastrophicSsrResponse(response);
