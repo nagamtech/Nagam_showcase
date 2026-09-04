@@ -2,7 +2,7 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 
-// ➕ INÍCIO — Proteção de Limite de Requisições (NOVO!)
+// ➕ INÍCIO — Proteção de Limite + ALERTA DE ATAQUE
 const contadorPorIP = new Map<string, { contagem: number; expiraEm: number }>();
 
 // Limpa contagens antigas a cada 5 minutos
@@ -16,8 +16,10 @@ setInterval(() => {
 function aplicarLimite(request: Request): Response | null {
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "desconhecido";
   const agora = Date.now();
+  const dataHora = new Date(agora).toLocaleString("pt-BR");
+  const rota = new URL(request.url).pathname;
   const JANELA_TEMPO = 60 * 1000; // 1 minuto
-  const MAXIMO_REQUISICOES = 100; // 100 por minuto
+  const MAXIMO_REQUISICOES = 100;
 
   let registro = contadorPorIP.get(ip);
   if (!registro || registro.expiraEm < agora) {
@@ -27,7 +29,14 @@ function aplicarLimite(request: Request): Response | null {
   registro.contagem += 1;
   contadorPorIP.set(ip, registro);
 
+  // ⚠️ ALERTA — Quando estiver no limite (avisa antes de bloquear)
+  if (registro.contagem === 90) {
+    console.warn(`⚠️ [ALERTA] IP: ${ip} | Rota: ${rota} | Aproximando do limite! (${registro.contagem}/min) | ${dataHora}`);
+  }
+
+  // 🚫 BLOQUEIO — Quando passar do limite
   if (registro.contagem > MAXIMO_REQUISICOES) {
+    console.error(`🚫 [ATAQUE BLOQUEADO] IP: ${ip} | Rota: ${rota} | ${registro.contagem} requisições em 1min | ${dataHora}`);
     return new Response(
       JSON.stringify({
         erro: "Muitas requisições",
@@ -41,7 +50,7 @@ function aplicarLimite(request: Request): Response | null {
   }
   return null;
 }
-// ➕ FIM — Proteção Nova
+// ➕ FIM — Proteção e Alerta
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -81,7 +90,7 @@ function isH3SwallowedErrorBody(body: string): boolean {
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
-      // ➕ AQUI — Verifica limite ANTES de processar qualquer coisa
+      // ➕ Verifica limite E REGISTRA TUDO
       const bloqueio = aplicarLimite(request);
       if (bloqueio) return bloqueio;
 
