@@ -1,6 +1,27 @@
-import { Link } from "@tanstack/react-router";
+// ✅ === 1. IMPORTS E PROTEÇÃO — FICA SEMPRE NO TOPO! ===
+import { Link, createFileRoute, redirect } from "@tanstack/react-router";
 import { Package, BarChart3, DollarSign, Users, Settings, ClipboardList } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
+// ⛔ PROTEÇÃO — RODA ANTES DE CARREGAR A PÁGINA
+export const Route = createFileRoute("/backoffice")({
+  beforeLoad: async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    // Se NÃO estiver logado → volta para página inicial
+    if (!user) {
+      throw redirect({ to: "/" });
+    }
+
+    // ✅ TROQUE AQUI PELO SEU E-MAIL
+    const emailPermitido = "seuemail@seudominio.com";
+    if (user.email !== emailPermitido) {
+      throw redirect({ to: "/" });
+    }
+  },
+});
+
+// ✅ === 2. SEU COMPONENTE — VEM DEPOIS ===
 export function BackOffice() {
   const solutions = [
     {
@@ -41,31 +62,8 @@ export function BackOffice() {
     },
   ];
 
-  // ✅ VERIFICAÇÃO DE SEGURANÇA — SÓ ADMIN PODE ENTRAR
-import { createFileRoute, redirect } from "@tanstack/react-router";
-import { supabase } from "@/lib/supabase"; // ajuste o caminho conforme seu projeto
-
-// ⛔ PROTEÇÃO — RODA ANTES DE CARREGAR A PÁGINA
-export const Route = createFileRoute("/backoffice")({
-  beforeLoad: async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    
-    // Se NÃO estiver logado → Joga para a página de login
-    if (!user) {
-      throw redirect({ to: "/" });
-    }
-
-    // ✅ Aqui você pode restringir SÓ para SEU e-mail
-    const emailPermitido = "seuemail@seudominio.com";
-    if (user.email !== emailPermitido) {
-      throw redirect({ to: "/" });
-    }
-  },
-});
-
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-muted/30">
-      {/* Cabeçalho da página */}
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -77,8 +75,6 @@ export const Route = createFileRoute("/backoffice")({
           </p>
         </div>
       </section>
-
-      {/* Grade de soluções */}
       <section className="px-4 pb-20">
         <div className="max-w-6xl mx-auto">
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
