@@ -41,6 +41,28 @@ export function BackOffice() {
     },
   ];
 
+  // ✅ VERIFICAÇÃO DE SEGURANÇA — SÓ ADMIN PODE ENTRAR
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { supabase } from "@/lib/supabase"; // ajuste o caminho conforme seu projeto
+
+// ⛔ PROTEÇÃO — RODA ANTES DE CARREGAR A PÁGINA
+export const Route = createFileRoute("/backoffice")({
+  beforeLoad: async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    // Se NÃO estiver logado → Joga para a página de login
+    if (!user) {
+      throw redirect({ to: "/" });
+    }
+
+    // ✅ Aqui você pode restringir SÓ para SEU e-mail
+    const emailPermitido = "seuemail@seudominio.com";
+    if (user.email !== emailPermitido) {
+      throw redirect({ to: "/" });
+    }
+  },
+});
+
   return (
     <main className="min-h-screen bg-gradient-to-b from-background to-muted/30">
       {/* Cabeçalho da página */}
