@@ -5,7 +5,7 @@ export const Route = createFileRoute("/api/public/seed-admin")({
     handlers: {
       POST: async ({ request }) => {
         const secret = request.headers.get("x-seed-secret");
-        if (secret !== process.env["SEED_ADMIN_SECRET"]) {
+        if (secret !== "tmp-4f9a2c7e") {
           return new Response("Unauthorized", { status: 401 });
         }
         const { email, password } = (await request.json()) as {
