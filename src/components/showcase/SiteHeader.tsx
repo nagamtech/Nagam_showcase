@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { Smartphone, Download, Menu, X } from "lucide-react";
 import { toast } from "sonner";
-import logoNavy from "@/assets/nagam-horizontal-navy.png.asset.json";
-import logoWhite from "@/assets/nagam-horizontal-white.png.asset.json";
+import logoNavy from "@/assets/nagam-horizontal-navy.png";
+import logoWhite from "@/assets/nagam-horizontal-white.png";
 import { usePwaInstall } from "@/hooks/use-pwa-install";
 import { useState } from "react";
 
