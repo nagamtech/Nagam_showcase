@@ -1,7 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
 // ✅ COLOQUE SEU E-MAIL ABAIXO
-const ADMIN_EMAIL = "seu-email@aqui.com";
+const ADMIN_EMAIL = "contato.nagam@gmail.com";
 
 export const Route = createFileRoute("/backoffice")({
   // ✅ VERIFICA ANTES DE CARREGAR A PÁGINA
