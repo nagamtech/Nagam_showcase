@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/backoffice")({
+export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Nagam — BackOffice" },
