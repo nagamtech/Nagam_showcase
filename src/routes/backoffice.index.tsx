@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const ADMIN_EMAIL = import.meta.env['VITE_ADMIN_EMAIL'] as string | undefined;
 
-export const Route = createFileRoute("/backoffice")({
+export const Route = createFileRoute("/backoffice/")({
   ssr: false,
   head: () => ({
     meta: [
@@ -26,7 +26,7 @@ export const Route = createFileRoute("/backoffice")({
     } = await supabase.auth.getUser();
 
     if (!user) {
-      throw redirect({ to: "/" });
+      throw redirect({ to: "/backoffice/login" });
     }
 
     if (!ADMIN_EMAIL || user.email?.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) {
