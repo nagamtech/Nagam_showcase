@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as BackofficeIndexRouteImport } from './routes/backoffice.index'
 import { Route as SegmentosIndexRouteImport } from './routes/segmentos.index'
 import { Route as SegmentosSlugRouteImport } from './routes/segmentos.$slug'
 import { Route as SolucoesIndexRouteImport } from './routes/solucoes.index'
@@ -25,11 +24,6 @@ const IndexRoute = IndexRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BackofficeIndexRoute = BackofficeIndexRouteImport.update({
-  id: '/backoffice/',
-  path: '/backoffice/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SegmentosIndexRoute = SegmentosIndexRouteImport.update({
@@ -58,7 +52,6 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/segmentos/$slug': typeof SegmentosSlugRoute
   '/solucoes/$slug': typeof SolucoesSlugRoute
-  '/backoffice/': typeof BackofficeIndexRoute
   '/segmentos/': typeof SegmentosIndexRoute
   '/solucoes/': typeof SolucoesIndexRoute
 }
@@ -67,7 +60,6 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/segmentos/$slug': typeof SegmentosSlugRoute
   '/solucoes/$slug': typeof SolucoesSlugRoute
-  '/backoffice': typeof BackofficeIndexRoute
   '/segmentos': typeof SegmentosIndexRoute
   '/solucoes': typeof SolucoesIndexRoute
 }
@@ -77,7 +69,6 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/segmentos/$slug': typeof SegmentosSlugRoute
   '/solucoes/$slug': typeof SolucoesSlugRoute
-  '/backoffice/': typeof BackofficeIndexRoute
   '/segmentos/': typeof SegmentosIndexRoute
   '/solucoes/': typeof SolucoesIndexRoute
 }
@@ -88,7 +79,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/segmentos/$slug'
     | '/solucoes/$slug'
-    | '/backoffice/'
     | '/segmentos/'
     | '/solucoes/'
   fileRoutesByTo: FileRoutesByTo
@@ -97,7 +87,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/segmentos/$slug'
     | '/solucoes/$slug'
-    | '/backoffice'
     | '/segmentos'
     | '/solucoes'
   id:
@@ -106,7 +95,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/segmentos/$slug'
     | '/solucoes/$slug'
-    | '/backoffice/'
     | '/segmentos/'
     | '/solucoes/'
   fileRoutesById: FileRoutesById
@@ -116,7 +104,6 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SegmentosSlugRoute: typeof SegmentosSlugRoute
   SolucoesSlugRoute: typeof SolucoesSlugRoute
-  BackofficeIndexRoute: typeof BackofficeIndexRoute
   SegmentosIndexRoute: typeof SegmentosIndexRoute
   SolucoesIndexRoute: typeof SolucoesIndexRoute
 }
@@ -135,13 +122,6 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/backoffice/': {
-      id: '/backoffice/'
-      path: '/backoffice'
-      fullPath: '/backoffice/'
-      preLoaderRoute: typeof BackofficeIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/segmentos/': {
@@ -180,7 +160,6 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SegmentosSlugRoute: SegmentosSlugRoute,
   SolucoesSlugRoute: SolucoesSlugRoute,
-  BackofficeIndexRoute: BackofficeIndexRoute,
   SegmentosIndexRoute: SegmentosIndexRoute,
   SolucoesIndexRoute: SolucoesIndexRoute,
 }
