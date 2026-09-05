@@ -17,7 +17,6 @@ import { Route as SegmentosIndexRouteImport } from './routes/segmentos.index'
 import { Route as SegmentosSlugRouteImport } from './routes/segmentos.$slug'
 import { Route as SolucoesIndexRouteImport } from './routes/solucoes.index'
 import { Route as SolucoesSlugRouteImport } from './routes/solucoes.$slug'
-import { Route as ApiPublicSeedAdminRouteImport } from './routes/api/public/seed-admin'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -59,11 +58,6 @@ const SolucoesSlugRoute = SolucoesSlugRouteImport.update({
   path: '/solucoes/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicSeedAdminRoute = ApiPublicSeedAdminRouteImport.update({
-  id: '/api/public/seed-admin',
-  path: '/api/public/seed-admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -74,7 +68,6 @@ export interface FileRoutesByFullPath {
   '/backoffice/': typeof BackofficeIndexRoute
   '/segmentos/': typeof SegmentosIndexRoute
   '/solucoes/': typeof SolucoesIndexRoute
-  '/api/public/seed-admin': typeof ApiPublicSeedAdminRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -85,7 +78,6 @@ export interface FileRoutesByTo {
   '/backoffice': typeof BackofficeIndexRoute
   '/segmentos': typeof SegmentosIndexRoute
   '/solucoes': typeof SolucoesIndexRoute
-  '/api/public/seed-admin': typeof ApiPublicSeedAdminRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -97,7 +89,6 @@ export interface FileRoutesById {
   '/backoffice/': typeof BackofficeIndexRoute
   '/segmentos/': typeof SegmentosIndexRoute
   '/solucoes/': typeof SolucoesIndexRoute
-  '/api/public/seed-admin': typeof ApiPublicSeedAdminRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -110,7 +101,6 @@ export interface FileRouteTypes {
     | '/backoffice/'
     | '/segmentos/'
     | '/solucoes/'
-    | '/api/public/seed-admin'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -121,7 +111,6 @@ export interface FileRouteTypes {
     | '/backoffice'
     | '/segmentos'
     | '/solucoes'
-    | '/api/public/seed-admin'
   id:
     | '__root__'
     | '/'
@@ -132,7 +121,6 @@ export interface FileRouteTypes {
     | '/backoffice/'
     | '/segmentos/'
     | '/solucoes/'
-    | '/api/public/seed-admin'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -144,7 +132,6 @@ export interface RootRouteChildren {
   BackofficeIndexRoute: typeof BackofficeIndexRoute
   SegmentosIndexRoute: typeof SegmentosIndexRoute
   SolucoesIndexRoute: typeof SolucoesIndexRoute
-  ApiPublicSeedAdminRoute: typeof ApiPublicSeedAdminRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -205,13 +192,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SolucoesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/seed-admin': {
-      id: '/api/public/seed-admin'
-      path: '/api/public/seed-admin'
-      fullPath: '/api/public/seed-admin'
-      preLoaderRoute: typeof ApiPublicSeedAdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -224,7 +204,6 @@ const rootRouteChildren: RootRouteChildren = {
   BackofficeIndexRoute: BackofficeIndexRoute,
   SegmentosIndexRoute: SegmentosIndexRoute,
   SolucoesIndexRoute: SolucoesIndexRoute,
-  ApiPublicSeedAdminRoute: ApiPublicSeedAdminRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
