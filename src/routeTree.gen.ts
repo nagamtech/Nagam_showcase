@@ -10,8 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as BackofficeRouteImport } from './routes/backoffice'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as BackofficeIndexRouteImport } from './routes/backoffice.index'
+import { Route as BackofficeLoginRouteImport } from './routes/backoffice.login'
 import { Route as SegmentosIndexRouteImport } from './routes/segmentos.index'
 import { Route as SegmentosSlugRouteImport } from './routes/segmentos.$slug'
 import { Route as SolucoesIndexRouteImport } from './routes/solucoes.index'
@@ -22,14 +23,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BackofficeRoute = BackofficeRouteImport.update({
-  id: '/backoffice',
-  path: '/backoffice',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BackofficeIndexRoute = BackofficeIndexRouteImport.update({
+  id: '/backoffice/',
+  path: '/backoffice/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BackofficeLoginRoute = BackofficeLoginRouteImport.update({
+  id: '/backoffice/login',
+  path: '/backoffice/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SegmentosIndexRoute = SegmentosIndexRouteImport.update({
@@ -55,29 +61,32 @@ const SolucoesSlugRoute = SolucoesSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/backoffice': typeof BackofficeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/backoffice/login': typeof BackofficeLoginRoute
   '/segmentos/$slug': typeof SegmentosSlugRoute
   '/solucoes/$slug': typeof SolucoesSlugRoute
+  '/backoffice/': typeof BackofficeIndexRoute
   '/segmentos/': typeof SegmentosIndexRoute
   '/solucoes/': typeof SolucoesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/backoffice': typeof BackofficeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/backoffice/login': typeof BackofficeLoginRoute
   '/segmentos/$slug': typeof SegmentosSlugRoute
   '/solucoes/$slug': typeof SolucoesSlugRoute
+  '/backoffice': typeof BackofficeIndexRoute
   '/segmentos': typeof SegmentosIndexRoute
   '/solucoes': typeof SolucoesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/backoffice': typeof BackofficeRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/backoffice/login': typeof BackofficeLoginRoute
   '/segmentos/$slug': typeof SegmentosSlugRoute
   '/solucoes/$slug': typeof SolucoesSlugRoute
+  '/backoffice/': typeof BackofficeIndexRoute
   '/segmentos/': typeof SegmentosIndexRoute
   '/solucoes/': typeof SolucoesIndexRoute
 }
@@ -85,38 +94,42 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/backoffice'
     | '/sitemap.xml'
+    | '/backoffice/login'
     | '/segmentos/$slug'
     | '/solucoes/$slug'
+    | '/backoffice/'
     | '/segmentos/'
     | '/solucoes/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/backoffice'
     | '/sitemap.xml'
+    | '/backoffice/login'
     | '/segmentos/$slug'
     | '/solucoes/$slug'
+    | '/backoffice'
     | '/segmentos'
     | '/solucoes'
   id:
     | '__root__'
     | '/'
-    | '/backoffice'
     | '/sitemap.xml'
+    | '/backoffice/login'
     | '/segmentos/$slug'
     | '/solucoes/$slug'
+    | '/backoffice/'
     | '/segmentos/'
     | '/solucoes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  BackofficeRoute: typeof BackofficeRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  BackofficeLoginRoute: typeof BackofficeLoginRoute
   SegmentosSlugRoute: typeof SegmentosSlugRoute
   SolucoesSlugRoute: typeof SolucoesSlugRoute
+  BackofficeIndexRoute: typeof BackofficeIndexRoute
   SegmentosIndexRoute: typeof SegmentosIndexRoute
   SolucoesIndexRoute: typeof SolucoesIndexRoute
 }
@@ -130,18 +143,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/backoffice': {
-      id: '/backoffice'
-      path: '/backoffice'
-      fullPath: '/backoffice'
-      preLoaderRoute: typeof BackofficeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/backoffice/': {
+      id: '/backoffice/'
+      path: '/backoffice'
+      fullPath: '/backoffice/'
+      preLoaderRoute: typeof BackofficeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/backoffice/login': {
+      id: '/backoffice/login'
+      path: '/backoffice/login'
+      fullPath: '/backoffice/login'
+      preLoaderRoute: typeof BackofficeLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/segmentos/': {
@@ -177,10 +197,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  BackofficeRoute: BackofficeRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  BackofficeLoginRoute: BackofficeLoginRoute,
   SegmentosSlugRoute: SegmentosSlugRoute,
   SolucoesSlugRoute: SolucoesSlugRoute,
+  BackofficeIndexRoute: BackofficeIndexRoute,
   SegmentosIndexRoute: SegmentosIndexRoute,
   SolucoesIndexRoute: SolucoesIndexRoute,
 }
