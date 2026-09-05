@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as BackofficeIndexRouteImport } from './routes/backoffice.index'
+import { Route as BackofficeLoginRouteImport } from './routes/backoffice.login'
 import { Route as SegmentosIndexRouteImport } from './routes/segmentos.index'
 import { Route as SegmentosSlugRouteImport } from './routes/segmentos.$slug'
 import { Route as SolucoesIndexRouteImport } from './routes/solucoes.index'
@@ -30,6 +31,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const BackofficeIndexRoute = BackofficeIndexRouteImport.update({
   id: '/backoffice/',
   path: '/backoffice/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BackofficeLoginRoute = BackofficeLoginRouteImport.update({
+  id: '/backoffice/login',
+  path: '/backoffice/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SegmentosIndexRoute = SegmentosIndexRouteImport.update({
@@ -56,6 +62,7 @@ const SolucoesSlugRoute = SolucoesSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/backoffice/login': typeof BackofficeLoginRoute
   '/segmentos/$slug': typeof SegmentosSlugRoute
   '/solucoes/$slug': typeof SolucoesSlugRoute
   '/backoffice/': typeof BackofficeIndexRoute
@@ -65,6 +72,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/backoffice/login': typeof BackofficeLoginRoute
   '/segmentos/$slug': typeof SegmentosSlugRoute
   '/solucoes/$slug': typeof SolucoesSlugRoute
   '/backoffice': typeof BackofficeIndexRoute
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/backoffice/login': typeof BackofficeLoginRoute
   '/segmentos/$slug': typeof SegmentosSlugRoute
   '/solucoes/$slug': typeof SolucoesSlugRoute
   '/backoffice/': typeof BackofficeIndexRoute
@@ -86,6 +95,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/sitemap.xml'
+    | '/backoffice/login'
     | '/segmentos/$slug'
     | '/solucoes/$slug'
     | '/backoffice/'
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/sitemap.xml'
+    | '/backoffice/login'
     | '/segmentos/$slug'
     | '/solucoes/$slug'
     | '/backoffice'
@@ -104,6 +115,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/sitemap.xml'
+    | '/backoffice/login'
     | '/segmentos/$slug'
     | '/solucoes/$slug'
     | '/backoffice/'
@@ -114,6 +126,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  BackofficeLoginRoute: typeof BackofficeLoginRoute
   SegmentosSlugRoute: typeof SegmentosSlugRoute
   SolucoesSlugRoute: typeof SolucoesSlugRoute
   BackofficeIndexRoute: typeof BackofficeIndexRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/backoffice'
       fullPath: '/backoffice/'
       preLoaderRoute: typeof BackofficeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/backoffice/login': {
+      id: '/backoffice/login'
+      path: '/backoffice/login'
+      fullPath: '/backoffice/login'
+      preLoaderRoute: typeof BackofficeLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/segmentos/': {
@@ -178,6 +198,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  BackofficeLoginRoute: BackofficeLoginRoute,
   SegmentosSlugRoute: SegmentosSlugRoute,
   SolucoesSlugRoute: SolucoesSlugRoute,
   BackofficeIndexRoute: BackofficeIndexRoute,
