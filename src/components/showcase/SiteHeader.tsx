@@ -49,7 +49,7 @@ export function SiteHeader() {
         <div className="flex-1" />
 
         {/* ✅ BOTÃO COM "DOWNLOAD" SEMPRE VISÍVEL */}
-        {showInstall && (
+        {true && (
           <button
             type="button"
             onClick={handleInstallClick}
