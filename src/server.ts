@@ -1,22 +1,25 @@
-// ✅ RATE LIMITING — Proteção contra ataques
+// ✅ RATE LIMITING — Proteção contra ataques e excesso de requisições
 const rateLimitMap = new Map<string, { count: number; timestamp: number }>();
-const RATE_LIMIT_MAX = 100; // 100 requisições
-const RATE_LIMIT_WINDOW = 60 * 1000; // por minuto
+const RATE_LIMIT_MAX = 100;        // Máximo 100 requisições
+const RATE_LIMIT_WINDOW = 60000;   // Por minuto (60.000ms)
 
-function checkRateLimit(request: Request): boolean {
-  const ip = request.headers.get("x-forwarded-for") || "unknown";
+function checkRateLimit(request: Request): Response | null {
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "127.0.0.1";
   const now = Date.now();
-  
-  const record = rateLimitMap.get(ip) || { count: 0, timestamp: now };
-  
-  // Limpa contador após janela
-  if (now - record.timestamp > RATE_LIMIT_WINDOW) {
-    record.count = 1;
-    record.timestamp = now;
+
+  let record = rateLimitMap.get(ip);
+  if (!record || now - record.timestamp > RATE_LIMIT_WINDOW) {
+    record = { count: 1, timestamp: now };
   } else {
     record.count += 1;
   }
-  
   rateLimitMap.set(ip, record);
-  return record.count <= RATE_LIMIT_MAX;
+
+  if (record.count > RATE_LIMIT_MAX) {
+    return new Response("Muitas requisições — tente novamente mais tarde.", {
+      status: 429,
+      headers: { "Retry-After": "60" },
+    });
+  }
+  return null;
 }
