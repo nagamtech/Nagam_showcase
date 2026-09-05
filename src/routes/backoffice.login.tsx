@@ -25,7 +25,7 @@ export const Route = createFileRoute("/backoffice/login")({
       throw redirect({ to: "/backoffice" });
     }
   },
-  component: BackOfficeLogin;
+  component: BackOfficeLogin,
 });
 
 function BackOfficeLogin() {
